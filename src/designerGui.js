@@ -381,7 +381,13 @@ function loadMessage(message, hasDoc, extra) {
   }, extra || {});
 }
 
-async function openDesigner(uri) {
+// "post /orders" → { path, method }, or null.
+function focusOf(target) {
+  const m = /^\s*(\w+)\s+(\S+)\s*$/.exec(String((target && target.operation) || ''));
+  return m ? { method: m[1].toLowerCase(), path: m[2] } : null;
+}
+
+async function openDesigner(uri, target) {
   const vscode = require('vscode');
   let doc;
   if (uri && uri.fsPath) {
@@ -398,6 +404,7 @@ async function openDesigner(uri) {
     existing.reveal(vscode.ViewColumn.One);
     const follow = followers.get(existing);
     if (follow) follow.force();
+    if (focusOf(target)) existing.webview.postMessage(Object.assign({ type: 'focus' }, focusOf(target)));
     return;
   }
   const base = path.basename(doc.fileName);
@@ -410,7 +417,7 @@ async function openDesigner(uri) {
   panel.webview.html = buildDesignerHtml();
   let bound = doc;
   wirePanel(panel, () => bound, (d) => { bound = d; });
-  panel.webview.postMessage(loadMessage(built.message, true));
+  panel.webview.postMessage(loadMessage(built.message, true, focusOf(target) ? { focus: focusOf(target) } : null));
 }
 
 function openNewContract() {

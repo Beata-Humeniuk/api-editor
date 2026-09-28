@@ -383,11 +383,19 @@ window.addEventListener('message', function (e) {
       const ops = listOps();
       S.selOp = ops.length ? { path: ops[0].path, method: ops[0].method } : null;
       S.propTarget = { kind: 'interface' };
+      // Opened for one operation (a Logic Spec service): that one, shown.
+      const f = m.focus;
+      if (f && ops.some(function (o) { return o.path === f.path && o.method === f.method; })) {
+        S.selOp = { path: f.path, method: f.method };
+        S.propTarget = { kind: 'operation' };
+      }
     } else {
       S.view = 'create';
     }
     render();
     reapplyState(keep, m.time);
+  } else if (m.type === 'focus') {
+    if (spec && listOps().some(function (o) { return o.path === m.path && o.method === m.method; })) selectOp(m.path, m.method);
   } else if (m.type === 'reloadFailed') {
     saveStatus = M('status.reloadFailed');
     renderStatus();
