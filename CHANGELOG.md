@@ -4,6 +4,15 @@ Notable changes to API Editor. This project follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0]
+
+### Added
+
+- **Open a contract at one operation.** Another extension can open the
+  designer straight on a service: `apiEditor.editGui` takes the operation as a
+  second argument (`{ operation: 'post /orders' }`) and selects it, also in a
+  designer that is already open. Spec IDE's Contracts tab and Logic Spec use it.
+
 ## [1.0.0]
 
 First public release.
@@ -34,4 +43,5 @@ First public release.
   target format, such as XSD `choice` to OpenAPI `oneOf`, or `oneOf`
   properties to Avro unions.
 
+[1.1.0]: https://github.com/Beata-Humeniuk/api-editor/releases/tag/v1.1.0
 [1.0.0]: https://github.com/Beata-Humeniuk/api-editor/releases/tag/v1.0.0
