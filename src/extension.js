@@ -271,8 +271,10 @@ function activate(context) {
   extensionVersion = (context.extension && context.extension.packageJSON &&
     context.extension.packageJSON.version) || '';
   context.subscriptions.push(
-    vscode.commands.registerCommand('apiEditor.editGui', (uri) =>
-      require('./designerGui').openDesigner(uri)),
+    // A second argument opens the contract at one operation — the service a
+    // Logic Spec design describes: { operation: 'post /orders' }.
+    vscode.commands.registerCommand('apiEditor.editGui', (uri, target) =>
+      require('./designerGui').openDesigner(uri, target)),
     vscode.commands.registerCommand('apiEditor.newContract', () => require('./designerGui').openNewContract()),
     vscode.commands.registerCommand('apiEditor.exportMd', exportMdCommand),
     vscode.commands.registerCommand('apiEditor.convertContract', convertContractCommand),
